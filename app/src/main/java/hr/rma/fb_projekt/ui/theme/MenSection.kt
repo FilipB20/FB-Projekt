@@ -59,7 +59,7 @@ fun MenSection() {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back Icon",
-                    tint = WarmWhite,
+                    tint = Color(254, 248, 234),
                     modifier = Modifier
                         .padding(start = 16.dp) // Adds some padding to the left
                         .size(24.dp) // Makes the icon size uniform
@@ -71,13 +71,13 @@ fun MenSection() {
                     text = "CLOSETIFY",
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp,
-                    color = WarmWhite,
+                    color = Color(254, 248, 234),
                     modifier = Modifier
                 )
                 Icon(
                     imageVector = Icons.Default.ShoppingCart,
                     contentDescription = "Cart Icon",
-                    tint = WarmWhite,
+                    tint = Color(254, 248, 234),
                     modifier = Modifier
                         .padding(end = 16.dp) // Adds some padding to the right
                         .size(24.dp) // Makes the icon size uniform
@@ -87,7 +87,7 @@ fun MenSection() {
                 text = "MEN",
                 fontSize = 50.sp, // Adjust font size if needed
                 fontWeight = FontWeight.Bold,
-                color = WarmWhite,
+                color = Color(254, 248, 234),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally) // Centers the text horizontally
@@ -109,7 +109,7 @@ fun MenSection() {
                         .fillMaxWidth(0.8f)
                         .height(70.dp)
                 ) {
-                    Text(text = "UPPERWEAR", fontSize = 30.sp, color = WarmWhite)
+                    Text(text = "UPPERWEAR", fontSize = 30.sp, color = Color(254, 248, 234))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -122,7 +122,7 @@ fun MenSection() {
                         .fillMaxWidth(0.8f)
                         .height(70.dp)
                 ) {
-                    Text(text = "UNDERWEAR", fontSize = 30.sp, color = WarmWhite)
+                    Text(text = "UNDERWEAR", fontSize = 30.sp, color = Color(254, 248, 234))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -135,7 +135,7 @@ fun MenSection() {
                         .fillMaxWidth(0.8f)
                         .height(70.dp)
                 ) {
-                    Text(text = "ACCESSORIES", fontSize = 30.sp, color = WarmWhite)
+                    Text(text = "ACCESSORIES", fontSize = 30.sp, color = Color(254, 248, 234))
                 }
             }
 
