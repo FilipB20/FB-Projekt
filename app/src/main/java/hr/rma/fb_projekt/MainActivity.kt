@@ -3,45 +3,42 @@ package hr.rma.fb_projekt
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import hr.rma.fb_projekt.ui.theme.FBProjektTheme
+import androidx.compose.runtime.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import hr.rma.fb_projekt.ui.theme.*
+
+@Composable
+fun MyApp() {
+    // Shared state for the cart
+    val cartItems = remember { mutableStateListOf<Article>() }
+    AppNavigation(cartItems = cartItems)
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            FBProjektTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            MyApp()
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun AppNavigation(cartItems: MutableList<Article>) {
+    val navController = rememberNavController()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    FBProjektTheme {
-        Greeting("Android")
+    NavHost(
+        navController = navController,
+        startDestination = "main"
+    ) {
+        // Pass the shared cart state to each composable
+        composable("main") { MainScreen(navController) }
+        composable("cart") { CartScreen(cartItems = cartItems) }
+        composable("men") { MenSection(cartItems = cartItems) }
+        composable("women") { WomenSection() }
+        composable("favorites") { FavoritesSection() }
     }
 }
+
