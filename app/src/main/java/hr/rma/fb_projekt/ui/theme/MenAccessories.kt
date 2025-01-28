@@ -32,7 +32,7 @@ import hr.rma.fb_projekt.R
 fun MenAccessories() {
     // Sample articles
     val articles = listOf(
-        Article(R.drawable.casiosat, "Casio Watch \n€49.99", "An all time classic"),
+        Article(R.drawable., "Nike Hoodie\n€49.99", "An all time classic"),
         Article(R.drawable.nikegloves, "Nike Gloves \n€39.99", "Gloves for cold days"),
         Article(R.drawable.silverbracelet, "Silver Bracelet \n€59.99", "A stylish bracelet"),
         Article(R.drawable.rayban, "RayBan Glasses \n€99.99", ""),

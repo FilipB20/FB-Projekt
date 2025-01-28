@@ -31,7 +31,7 @@ import hr.rma.fb_projekt.R
 fun WomenUpperwear() {
     // Sample articles
     val articles = listOf(
-        Article(R.drawable.carhartt, "Carhartt Jacket \n€79.99", "Comfortable and stylish jacket"),
+        Article(R.drawable.womennikehoodie, "Carhartt Jacket \n€79.99", "Comfortable and stylish jacket"),
         Article(R.drawable.nikehoodie, "Nike Hoodie \n€49.99", "Casual Nike hoodie for everyday wear"),
         Article(R.drawable.adidastshirt, "Adidas T-Shirt \n€29.99", "Basic Adidas T-Shirt"),
         Article(R.drawable.nbhoodie, "NB Hoodie \n€39.99", "Everyday NB hoodie"),

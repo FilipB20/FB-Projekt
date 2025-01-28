@@ -43,7 +43,7 @@ fun MainScreen(navController: NavHostController) {
             contentDescription = "Background image",
             contentScale = ContentScale.FillHeight,
             modifier = Modifier.matchParentSize(),
-            alpha = 0.5F
+            alpha = 0.3F
         )
 
         // Foreground Content
@@ -105,7 +105,7 @@ fun MainScreen(navController: NavHostController) {
                         .fillMaxWidth(0.8f)
                         .height(70.dp)
                 ) {
-                    Text(text = "MEN", fontSize = 30.sp, color = WarmWhite)
+                    Text(text = "MEN", fontSize = 30.sp, color = Color(254, 248, 234))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -118,7 +118,7 @@ fun MainScreen(navController: NavHostController) {
                         .fillMaxWidth(0.8f)
                         .height(70.dp)
                 ) {
-                    Text(text = "WOMEN", fontSize = 30.sp, color = WarmWhite)
+                    Text(text = "WOMEN", fontSize = 30.sp, color = Color(254, 248, 234))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -131,7 +131,7 @@ fun MainScreen(navController: NavHostController) {
                         .fillMaxWidth(0.8f)
                         .height(70.dp)
                 ) {
-                    Text(text = "FAVOURITES", fontSize = 30.sp, color = WarmWhite)
+                    Text(text = "FAVOURITES", fontSize = 30.sp, color = Color(254, 248, 234))
                 }
             }
 
