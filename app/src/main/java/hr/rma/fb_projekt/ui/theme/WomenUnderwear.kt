@@ -1,10 +1,13 @@
 package hr.rma.fb_projekt.ui.theme
 
-import android.graphics.fonts.Font
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -21,13 +24,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import hr.rma.fb_projekt.R
-
 
 @Preview
 @Composable
-fun WomenSection() {
+fun WomenUnderwear() {
+    // Sample articles
+    val articles = listOf(
+        Article(R.drawable.images, "Calvin Klein Jeans \n€79.99", "Stylish,modern jeans"),
+        Article(R.drawable.levis, "Levi's Jeans  \n€89.99", "An all time classic"),
+        Article(R.drawable.hm, "H&M Jeans \n€29.99", "Casual and affordable everyday jeans"),
+        Article(R.drawable.nike, "Nike sweatpants \n€49.99", "Comfortable sweatpants"),
+        Article(R.drawable.adidastrenerka, "Adidas sweatpants \n€45.99", "Everyday Adidas sweatpants"),
+        Article(R.drawable.niketech, "Nike Tech Fleece sweatpants \n€109.99", "Good looking sweatpants")
+    )
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -37,7 +48,7 @@ fun WomenSection() {
             contentDescription = "Background image",
             contentScale = ContentScale.FillHeight,
             modifier = Modifier.matchParentSize(),
-            alpha = 0.5F
+            alpha = 0.3F
         )
 
         // Foreground Content
@@ -45,6 +56,7 @@ fun WomenSection() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(0.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Top Section
@@ -59,9 +71,9 @@ fun WomenSection() {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back Icon",
-                    tint = WarmWhite,
+                    tint = Color.White,
                     modifier = Modifier
-                        .padding(start = 16.dp) // Adds some padding to the left
+                        .padding(start = 10.dp) // Adds some padding to the left
                         .size(24.dp) // Makes the icon size uniform
                         .clickable {
                             // Vodi nazad
@@ -71,71 +83,36 @@ fun WomenSection() {
                     text = "CLOSETIFY",
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp,
-                    color = WarmWhite,
+                    color = Color.White,
                     modifier = Modifier
                 )
                 Icon(
                     imageVector = Icons.Default.ShoppingCart,
                     contentDescription = "Cart Icon",
-                    tint = WarmWhite,
+                    tint = Color.White,
                     modifier = Modifier
                         .padding(end = 16.dp) // Adds some padding to the right
                         .size(24.dp) // Makes the icon size uniform
                 )
             }
+
+            // Heading
             Text(
-                text = "WOMEN",
-                fontSize = 50.sp, // Adjust font size if needed
-                fontWeight = FontWeight.Bold,
-                color = WarmWhite,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally) // Centers the text horizontally
-                    .padding(top = 100.dp, bottom = 100.dp) // Adds spacing above the buttons
+                text = "UNDERWEAR",
+                color = Color.White,
+                fontSize = 40.sp,
+                modifier = Modifier.padding(top = 16.dp)
             )
 
-
-            // Main Content
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+            // Articles Grid
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2), // 2 columns
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
             ) {
-                // Buttons for navigation
-                Button(
-                    onClick = {  },
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF90CAF9)),
-                    modifier = Modifier
-                        .fillMaxWidth(0.8f)
-                        .height(70.dp)
-                ) {
-                    Text(text = "UPPERWEAR", fontSize = 30.sp, color = WarmWhite)
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Button(
-                    onClick = {  },
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF90CAF9)),
-                    modifier = Modifier
-                        .fillMaxWidth(0.8f)
-                        .height(70.dp)
-                ) {
-                    Text(text = "UNDERWEAR", fontSize = 30.sp, color = WarmWhite)
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Button(
-                    onClick = { },
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF90CAF9)),
-                    modifier = Modifier
-                        .fillMaxWidth(0.8f)
-                        .height(70.dp)
-                ) {
-                    Text(text = "ACCESSORIES", fontSize = 30.sp, color = WarmWhite)
+                items(articles) { article ->
+                    ArticleCard(article = article)
                 }
             }
 
@@ -145,9 +122,10 @@ fun WomenSection() {
                 fontSize = 12.sp,
                 color = Color.Gray,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top=270.dp)
+                modifier = Modifier.padding(16.dp)
             )
         }
     }
 }
+
 

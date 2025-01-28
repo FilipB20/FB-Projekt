@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -42,7 +43,7 @@ fun MainScreen(navController: NavHostController) {
             contentDescription = "Background image",
             contentScale = ContentScale.FillHeight,
             modifier = Modifier.matchParentSize(),
-            alpha = 0.3F
+            alpha = 0.5F
         )
 
         // Foreground Content
@@ -57,25 +58,36 @@ fun MainScreen(navController: NavHostController) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Black33)
-                    .size(50.dp),
-                horizontalArrangement = Arrangement.Center,
+                    .background(Color.Black)
+                    .height(50.dp),
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween // Ensures space between items
             ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back Icon",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .padding(start = 16.dp) // Adds some padding to the left
+                        .size(24.dp) // Makes the icon size uniform
+                        .clickable {
+                            // Vodi nazad
+                        }
+                )
                 Text(
                     text = "CLOSETIFY",
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp,
-                    color = WarmWhite,
-                    modifier = Modifier.padding(105.dp, 0.dp)
+                    color = Color.White,
+                    modifier = Modifier
                 )
                 Icon(
                     imageVector = Icons.Default.ShoppingCart,
                     contentDescription = "Cart Icon",
-                    tint = WarmWhite,
+                    tint = Color.White,
                     modifier = Modifier
-                        .padding()
-                        .clickable { navController.navigate("cart") }, // Navigate to cart
+                        .padding(end = 16.dp) // Adds some padding to the right
+                        .size(24.dp) // Makes the icon size uniform
                 )
             }
 

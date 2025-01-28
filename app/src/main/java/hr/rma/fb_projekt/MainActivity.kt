@@ -36,7 +36,7 @@ fun AppNavigation(cartItems: MutableList<Article>) {
         // Pass the shared cart state to each composable
         composable("main") { MainScreen(navController) }
         composable("cart") { CartScreen(cartItems = cartItems) }
-        composable("men") { MenSection(cartItems = cartItems) }
+        composable("men") { MenSection() }
         composable("women") { WomenSection() }
         composable("favorites") { FavoritesSection() }
     }

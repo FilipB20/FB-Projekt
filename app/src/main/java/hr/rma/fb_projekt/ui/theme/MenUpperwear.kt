@@ -2,12 +2,14 @@ package hr.rma.fb_projekt.ui.theme
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -30,12 +32,12 @@ data class Article(val imageRes: Int, val title: String, val description: String
 fun MenUpperwear() {
     // Sample articles
     val articles = listOf(
-        Article(R.drawable.carhartt, "Carhartt Jacket", "Comfortable and stylish jacket"),
-        Article(R.drawable.nikehoodie, "Nike Hoodie", "Casual Nike hoodie for everyday wear"),
-        Article(R.drawable.adidastshirt, "Adidas T-Shirt", "Basic Adidas T-Shirt"),
-        Article(R.drawable.nbhoodie, "NB Hoodie", "Everyday NB hoodie"),
-        Article(R.drawable.rlsw, "Ralph Lauren Sweatshirt", "Comfortable and stylish sweatshirt"),
-        Article(R.drawable.rlhoodie, "Ralph Lauren Hoodie", "Everyday Polo Ralph Lauren hoodie")
+        Article(R.drawable.carhartt, "Carhartt Jacket \n€79.99", "Comfortable and stylish jacket"),
+        Article(R.drawable.nikehoodie, "Nike Hoodie \n€49.99", "Casual Nike hoodie for everyday wear"),
+        Article(R.drawable.adidastshirt, "Adidas T-Shirt \n€29.99", "Basic Adidas T-Shirt"),
+        Article(R.drawable.nbhoodie, "NB Hoodie \n€39.99", "Everyday NB hoodie"),
+        Article(R.drawable.rlsw, "Ralph Lauren Sweatshirt \n€119.99", "Comfortable and stylish sweatshirt"),
+        Article(R.drawable.rlhoodie, "Ralph Lauren Hoodie \n€139.99", "Everyday Polo Ralph Lauren hoodie")
     )
 
     Box(
@@ -54,7 +56,7 @@ fun MenUpperwear() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(0.dp),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -64,21 +66,34 @@ fun MenUpperwear() {
                     .fillMaxWidth()
                     .background(Color.Black)
                     .height(50.dp),
-                horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween // Ensures space between items
             ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back Icon",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .padding(start = 10.dp) // Adds some padding to the left
+                        .size(24.dp) // Makes the icon size uniform
+                        .clickable {
+                            // Vodi nazad
+                        }
+                )
                 Text(
                     text = "CLOSETIFY",
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp,
                     color = Color.White,
-                    modifier = Modifier.padding(105.dp, 0.dp)
+                    modifier = Modifier
                 )
                 Icon(
                     imageVector = Icons.Default.ShoppingCart,
                     contentDescription = "Cart Icon",
                     tint = Color.White,
-                    modifier = Modifier.padding()
+                    modifier = Modifier
+                        .padding(end = 16.dp) // Adds some padding to the right
+                        .size(24.dp) // Makes the icon size uniform
                 )
             }
 
