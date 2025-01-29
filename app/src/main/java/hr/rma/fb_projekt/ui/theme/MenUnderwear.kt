@@ -8,12 +8,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,24 +31,38 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.google.firebase.firestore.FirebaseFirestore
 import hr.rma.fb_projekt.R
 
 
-@Preview
 @Composable
-fun MenUnderwear() {
-    // Sample articles
-    val articles = listOf(
-        Article(R.drawable.images, "Calvin Klein Jeans \n€79.99", "Stylish,modern jeans"),
-        Article(R.drawable.levis, "Levi's Jeans  \n€89.99", "An all time classic"),
-        Article(R.drawable.hm, "H&M Jeans \n€29.99", "Casual and affordable everyday jeans"),
-        Article(R.drawable.nike, "Nike sweatpants \n€49.99", "Comfortable sweatpants"),
-        Article(R.drawable.adidastrenerka, "Adidas sweatpants \n€45.99", "Everyday Adidas sweatpants"),
-        Article(R.drawable.niketech, "Nike Tech Fleece sweatpants \n€109.99", "Good looking sweatpants")
-    )
+fun MenUnderwear(navController: NavHostController,cartItems: MutableList<Article>) {
+    val firestore = FirebaseFirestore.getInstance()
+    var articles by remember { mutableStateOf(listOf<Article>()) }
+
+    // Fetch data from Firestore
+    LaunchedEffect(Unit) {
+        firestore.collection("MenUnderwear")
+            .get()
+            .addOnSuccessListener { result ->
+                val fetchedArticles = result.map { document ->
+                    Article(
+                        imageUrl = document.getString("imageUrl") ?: "",
+                        title = document.getString("title") ?: "",
+                        price = document.getString("price") ?: ""
+                    )
+                }
+                articles = fetchedArticles
+            }
+            .addOnFailureListener {
+                // Handle failure, e.g., log the error
+            }
+    }
 
     Box(
         modifier = Modifier.fillMaxSize()
+
     ) {
         // Background Image
         Image(
@@ -72,12 +93,16 @@ fun MenUnderwear() {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back Icon",
-                    tint = Color.White,
+                    tint = Color(254, 248, 234),
                     modifier = Modifier
-                        .padding(start = 10.dp) // Adds some padding to the left
-                        .size(24.dp) // Makes the icon size uniform
+                        .padding(start = 16.dp)
+                        .size(24.dp)
                         .clickable {
-                            // Vodi nazad
+                            // Navigate to the main screen explicitly
+                            navController.navigate("men") {
+                                // This will pop the current "men" screen from the back stack to avoid redundant navigation
+                                popUpTo("men") { inclusive = true }
+                            }
                         }
                 )
                 Text(
@@ -92,15 +117,16 @@ fun MenUnderwear() {
                     contentDescription = "Cart Icon",
                     tint = Color.White,
                     modifier = Modifier
-                        .padding(end = 16.dp) // Adds some padding to the right
-                        .size(24.dp) // Makes the icon size uniform
+                        .padding(end = 16.dp)
+                        .size(24.dp)
+                        .clickable { navController.navigate("cart") }
                 )
             }
 
             // Heading
             Text(
                 text = "UNDERWEAR",
-                color = Color.White,
+                color = Black33,
                 fontSize = 40.sp,
                 modifier = Modifier.padding(top = 16.dp)
             )
@@ -113,18 +139,19 @@ fun MenUnderwear() {
                     .padding(top = 16.dp)
             ) {
                 items(articles) { article ->
-                    ArticleCard(article = article)
+                    ArticleCard(article = article, cartItems = cartItems, navController = navController)
                 }
-            }
+                // Footer Section
+                item{Text(
+                    text = "Closetify™ All rights reserved.",
+                    fontSize = 12.sp,
+                    color = Color.Gray,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }}
 
-            // Footer Section
-            Text(
-                text = "Closetify™ All rights reserved.",
-                fontSize = 12.sp,
-                color = Color.Gray,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(16.dp)
-            )
+
         }
     }
 }

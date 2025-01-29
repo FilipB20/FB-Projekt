@@ -14,6 +14,11 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,20 +29,35 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.google.firebase.firestore.FirebaseFirestore
 import hr.rma.fb_projekt.R
 
 
-@Preview
+
 @Composable
-fun Favorites() {
-    // Sample articles
-    val articles = listOf(
-        Article(R.drawable.nikehoodie, "€49.99", ""),
-        Article(R.drawable.nikehoodie, "€49.99", ""),
+fun Favorites(navController: NavHostController, cartItems: MutableList<Article>) {
+    val firestore = FirebaseFirestore.getInstance()
+    var articles by remember { mutableStateOf(listOf<Article>()) }
 
-        Article(R.drawable.nikehoodie, "€49.99", ""),
-
-        )
+    // Fetch data from Firestore
+    LaunchedEffect(Unit) {
+        firestore.collection("MenUpperwear")
+            .get()
+            .addOnSuccessListener { result ->
+                val fetchedArticles = result.map { document ->
+                    Article(
+                        imageUrl = document.getString("imageUrl") ?: "",
+                        title = document.getString("title") ?: "",
+                        price = document.getString("price") ?: ""
+                    )
+                }
+                articles = fetchedArticles
+            }
+            .addOnFailureListener {
+                // Handle failure, e.g., log the error
+            }
+    }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -112,7 +132,7 @@ fun Favorites() {
                     .padding(top = 16.dp)
             ) {
                 items(articles) { article ->
-                    ArticleCard(article = article)
+                    ArticleCard(article = article, cartItems = cartItems, navController = navController)
                 }
             }
 

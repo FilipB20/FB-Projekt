@@ -37,61 +37,78 @@ import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceModifier
 import hr.rma.fb_projekt.R
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.AlertDialogDefaults.containerColor
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
+import androidx.navigation.NavHostController
 
 
 @Composable
-fun CartScreen(cartItems: List<Article>) {
+fun CartScreen(navController: NavHostController, cartItems: MutableList<Article>) {
+    val totalPrice = cartItems.sumOf { it.price.toDoubleOrNull() ?: 0.0 }
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Background Image
         Image(
             painter = painterResource(id = R.drawable.img),
             contentDescription = "Background image",
-            contentScale = ContentScale.FillHeight, // Adjust to your preference (e.g., Crop, Fit, FillWidth)
+            contentScale = ContentScale.FillHeight,
             modifier = Modifier.matchParentSize(),
             alpha = 0.3F
         )
 
-        // Foreground Content
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(0.dp), // Optional: Add padding to avoid content touching edges
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Top Section
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Black33)
-                    .size(50.dp),
-                horizontalArrangement = Arrangement.Center,
+                    .background(Color.Black)
+                    .height(50.dp), // Use height instead of size for better control
+                horizontalArrangement = Arrangement.SpaceBetween, // Center the text
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back Icon",
+                    tint = Color(254, 248, 234),
+                    modifier = Modifier
+                        .padding(start = 40.dp,end=40.dp)
+                        .size(32.dp)
+                        .clickable {
+                            navController.navigate("main") {
+                                popUpTo("main") { inclusive = true }
+                            }
+                        }
+                )
                 Text(
                     text = "CLOSETIFY",
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp,
-                    color = WarmWhite,
-                    modifier = Modifier.padding(105.dp, 0.dp)
+                    color = Color.White,
+                    modifier = Modifier
+                        .fillMaxWidth() // Make sure it fills the width to center
+                        .padding(horizontal = 30.dp) // Optional, if you want some space on the sides
                 )
             }
 
-            // Main Content
             Column(
                 modifier = Modifier
                     .height(500.dp)
                     .width(300.dp)
                     .clip(RoundedCornerShape(10.dp))
-                    .background(WarmWhite)
-                    .border(2.dp, WarmWhite, RoundedCornerShape(10.dp))
+                    .background(Color.White)
+                    .border(2.dp, Color.White, RoundedCornerShape(10.dp))
             ) {
                 if (cartItems.isEmpty()) {
                     Text(
                         text = "Your cart is empty.",
-                        color = WarmWhite,
+                        color = Color.Black,
                         modifier = Modifier.padding(16.dp),
                         textAlign = TextAlign.Center
                     )
@@ -100,18 +117,51 @@ fun CartScreen(cartItems: List<Article>) {
                         modifier = Modifier.padding(16.dp)
                     ) {
                         items(cartItems) { item ->
-                            Text(
-                                text = "${item.title}: ${item.description}",
-                                color = Color.Black,
-                                fontSize = 16.sp,
-                                modifier = Modifier.padding(vertical = 8.dp)
-                            )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = item.title,
+                                    color = Color.Black,
+                                    fontSize = 16.sp
+                                )
+                                Text(
+                                    text = "€${item.price}",
+                                    color = Color.Gray,
+                                    fontSize = 14.sp
+                                )
+                            }
                         }
+                        item{Divider(
+                            modifier=Modifier.fillMaxWidth(),
+                            thickness= 3.dp,
+                            color = Black33
+                        )
+                        Text(
+                            text = "TOTAL: €${"%.2f".format(totalPrice)}",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 30.sp,
+                            color = Color.Black,
+                            modifier = Modifier.padding(start=80.dp,top=30.dp)
+                                .align(Alignment.CenterHorizontally)
+                        )
+                    }
                     }
                 }
             }
 
-            // Footer Section
+            Button(
+                onClick = { cartItems.clear()}, // Clear cart
+                modifier = Modifier.padding(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Black33)
+            ) {
+                Text(text = "Clear Cart")
+            }
+
             Text(
                 text = "Closetify™ All rights reserved.",
                 fontSize = 12.sp,

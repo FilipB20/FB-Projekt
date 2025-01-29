@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "598838446841",
+    "project_id": "closetify-8ee6c",
+    "storage_bucket": "closetify-8ee6c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:598838446841:android:38cd4976ca42550d357028",
+        "android_client_info": {
+          "package_name": "hr.rma.fb_projekt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMEGqmn3vf4R8FYQ3_wKMjTBUrzkHgK8A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

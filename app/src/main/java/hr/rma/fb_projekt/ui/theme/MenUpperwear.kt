@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,27 +25,41 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
+import com.google.firebase.firestore.FirebaseFirestore
 import hr.rma.fb_projekt.R
 
-data class Article(val imageRes: Int, val title: String, val description: String)
+data class Article(
+    val imageUrl: String = "",
+    val title: String = "",
+    val price: String = ""
+)
 
-@Preview
 @Composable
-fun MenUpperwear() {
-    // Sample articles
-    val articles = listOf(
-        Article(R.drawable.carhartt, "Carhartt Jacket \n€79.99", "Comfortable and stylish jacket"),
-        Article(R.drawable.nikehoodie, "Nike Hoodie \n€49.99", "Casual Nike hoodie for everyday wear"),
-        Article(R.drawable.adidastshirt, "Adidas T-Shirt \n€29.99", "Basic Adidas T-Shirt"),
-        Article(R.drawable.nbhoodie, "NB Hoodie \n€39.99", "Everyday NB hoodie"),
-        Article(R.drawable.rlsw, "Ralph Lauren Sweatshirt \n€119.99", "Comfortable and stylish sweatshirt"),
-        Article(R.drawable.rlhoodie, "Ralph Lauren Hoodie \n€139.99", "Everyday Polo Ralph Lauren hoodie")
-    )
+fun MenUpperwear(navController: NavHostController, cartItems: MutableList<Article>) {
+    val firestore = FirebaseFirestore.getInstance()
+    var articles by remember { mutableStateOf(listOf<Article>()) }
+
+    LaunchedEffect(Unit) {
+        firestore.collection("MenUpperwear")
+            .get()
+            .addOnSuccessListener { result ->
+                val fetchedArticles = result.map { document ->
+                    Article(
+                        imageUrl = document.getString("imageUrl") ?: "",
+                        title = document.getString("title") ?: "",
+                        price = document.getString("price") ?: ""
+                    )
+                }
+                articles = fetchedArticles
+            }
+    }
 
     Box(
         modifier = Modifier.fillMaxSize()
+
     ) {
-        // Background Image
         Image(
             painter = painterResource(id = R.drawable.img),
             contentDescription = "Background image",
@@ -52,32 +68,30 @@ fun MenUpperwear() {
             alpha = 0.3F
         )
 
-        // Foreground Content
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(0.dp),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Top Section
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.Black)
                     .height(50.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween // Ensures space between items
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back Icon",
-                    tint = Color.White,
+                    tint = Color(254, 248, 234),
                     modifier = Modifier
-                        .padding(start = 10.dp) // Adds some padding to the left
-                        .size(24.dp) // Makes the icon size uniform
+                        .padding(start = 16.dp)
+                        .size(24.dp)
                         .clickable {
-                            // Vodi nazad
+                            navController.navigate("men") {
+                                popUpTo("men") { inclusive = true }
+                            }
                         }
                 )
                 Text(
@@ -92,81 +106,92 @@ fun MenUpperwear() {
                     contentDescription = "Cart Icon",
                     tint = Color.White,
                     modifier = Modifier
-                        .padding(end = 16.dp) // Adds some padding to the right
-                        .size(24.dp) // Makes the icon size uniform
+                        .padding(end = 16.dp)
+                        .size(24.dp)
+                        .clickable { navController.navigate("cart") }
                 )
             }
 
-            // Heading
             Text(
                 text = "UPPERWEAR",
-                color = Color.White,
+                color = Color.Black,
                 fontSize = 40.sp,
                 modifier = Modifier.padding(top = 16.dp)
             )
 
-            // Articles Grid
             LazyVerticalGrid(
-                columns = GridCells.Fixed(2), // 2 columns
+                columns = GridCells.Fixed(2),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp)
+                    .padding(top = 12.dp)
             ) {
                 items(articles) { article ->
-                    ArticleCard(article = article)
+                    ArticleCard(article = article, cartItems = cartItems, navController = navController)
                 }
+                item{Text(
+                    text = "Closetify™ All rights reserved.",
+                    fontSize = 12.sp,
+                    color = Color.Gray,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(16.dp)
+                )
+                }}
             }
 
-            // Footer Section
-            Text(
-                text = "Closetify™ All rights reserved.",
-                fontSize = 12.sp,
-                color = Color.Gray,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(16.dp)
-            )
+
         }
     }
-}
+
 
 @Composable
-fun ArticleCard(article: Article) {
+fun ArticleCard(article: Article, cartItems: MutableList<Article>, navController: NavHostController) {
     Card(
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier
-            .padding(8.dp)
+            .padding(6.dp)
             .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(14.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = painterResource(id = article.imageRes),
+                painter = rememberAsyncImagePainter(article.imageUrl),
                 contentDescription = article.title,
                 modifier = Modifier
-                    .height(100.dp)
+                    .height(90.dp)
                     .fillMaxWidth(),
                 contentScale = ContentScale.Crop
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             Text(
                 text = article.title,
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
+                fontSize = 16.sp,
                 color = Color.Black,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = article.description,
+                text = "€${article.price}",
                 fontSize = 14.sp,
                 color = Color.Gray,
                 textAlign = TextAlign.Center
             )
+
+            Spacer(modifier = Modifier.height(2.dp))
+            Button(
+                onClick = {
+                    cartItems.add(article) // Add item to cart
+                },
+                modifier = Modifier.padding(top = 8.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Black33),
+            ) {
+                Text(text = "Add to Cart", fontSize = 12.sp)
+            }
         }
+
     }
 }
-

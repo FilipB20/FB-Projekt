@@ -25,13 +25,11 @@ import androidx.navigation.NavHostController
 import hr.rma.fb_projekt.R
 
 
-@Preview
 @Composable
-fun MenSection() {
+fun MenSection(navController: NavHostController,cartItems: MutableList<Article>) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Background Image
         Image(
             painter = painterResource(id = R.drawable.img),
             contentDescription = "Background image",
@@ -39,32 +37,46 @@ fun MenSection() {
             modifier = Modifier.matchParentSize(),
             alpha = 0.5F
         )
+        Icon(
+            imageVector = Icons.Default.ArrowBack,
+            contentDescription = "Back Icon",
+            tint = Color(254, 248, 234),
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .size(24.dp)
+                .clickable {
+                    // Navigate to the main screen explicitly
+                    navController.navigate("main") {
+                        // This will pop the current "men" screen from the back stack to avoid redundant navigation
+                        popUpTo("main") { inclusive = true }
+                    }
+                }
+        )
 
-        // Foreground Content
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(0.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Top Section
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.Black)
                     .height(50.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween // Ensures space between items
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back Icon",
                     tint = Color(254, 248, 234),
                     modifier = Modifier
-                        .padding(start = 16.dp) // Adds some padding to the left
-                        .size(24.dp) // Makes the icon size uniform
+                        .padding(start = 16.dp)
+                        .size(24.dp)
                         .clickable {
-                            // Vodi nazad
+                            navController.popBackStack() // Navigate back
                         }
                 )
                 Text(
@@ -77,32 +89,32 @@ fun MenSection() {
                 Icon(
                     imageVector = Icons.Default.ShoppingCart,
                     contentDescription = "Cart Icon",
-                    tint = Color(254, 248, 234),
+                    tint = Color.White,
                     modifier = Modifier
-                        .padding(end = 16.dp) // Adds some padding to the right
-                        .size(24.dp) // Makes the icon size uniform
+                        .padding(end = 16.dp)
+                        .size(24.dp)
+                        .clickable { navController.navigate("cart") }
                 )
             }
+
+
             Text(
                 text = "MEN",
-                fontSize = 50.sp, // Adjust font size if needed
+                fontSize = 50.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(254, 248, 234),
+                color = Black33,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .align(Alignment.CenterHorizontally) // Centers the text horizontally
-                    .padding(top = 100.dp, bottom = 100.dp) // Adds spacing above the buttons
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 100.dp, bottom = 100.dp)
             )
 
-
-            // Main Content
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Buttons for navigation
                 Button(
-                    onClick = {  },
+                    onClick = { navController.navigate("menUpperwear") },
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF90CAF9)),
                     modifier = Modifier
@@ -115,20 +127,23 @@ fun MenSection() {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
-                    onClick = {  },
+                    onClick = { navController.navigate("menUnderwear") },
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF90CAF9)),
                     modifier = Modifier
                         .fillMaxWidth(0.8f)
                         .height(70.dp)
                 ) {
-                    Text(text = "UNDERWEAR", fontSize = 30.sp, color = Color(254, 248, 234))
+                    Text(
+                        text = "UNDERWEAR",
+                        fontSize = 30.sp,
+                        color = WarmWhite)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
-                    onClick = { },
+                    onClick = { navController.navigate("menAccessories") },
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF90CAF9)),
                     modifier = Modifier
@@ -139,15 +154,13 @@ fun MenSection() {
                 }
             }
 
-            // Footer Section
             Text(
                 text = "Closetify™ All rights reserved.",
                 fontSize = 12.sp,
                 color = Color.Gray,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top=270.dp)
+                modifier = Modifier.padding(top = 270.dp)
             )
         }
     }
 }
-

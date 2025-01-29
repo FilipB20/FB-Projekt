@@ -25,9 +25,8 @@ import androidx.navigation.NavHostController
 import hr.rma.fb_projekt.R
 
 
-@Preview
 @Composable
-fun WomenSection() {
+fun WomenSection(navController: NavHostController,cartItems: MutableList<Article>) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -59,12 +58,16 @@ fun WomenSection() {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back Icon",
-                    tint = WarmWhite,
+                    tint = Color(254, 248, 234),
                     modifier = Modifier
-                        .padding(start = 16.dp) // Adds some padding to the left
-                        .size(24.dp) // Makes the icon size uniform
+                        .padding(start = 16.dp)
+                        .size(24.dp)
                         .clickable {
-                            // Vodi nazad
+                            // Navigate to the main screen explicitly
+                            navController.navigate("main") {
+                                // This will pop the current "men" screen from the back stack to avoid redundant navigation
+                                popUpTo("main") { inclusive = true }
+                            }
                         }
                 )
                 Text(
@@ -77,17 +80,18 @@ fun WomenSection() {
                 Icon(
                     imageVector = Icons.Default.ShoppingCart,
                     contentDescription = "Cart Icon",
-                    tint = WarmWhite,
+                    tint = Color.White,
                     modifier = Modifier
-                        .padding(end = 16.dp) // Adds some padding to the right
-                        .size(24.dp) // Makes the icon size uniform
+                        .padding(end = 16.dp)
+                        .size(24.dp)
+                        .clickable { navController.navigate("cart") }
                 )
             }
             Text(
                 text = "WOMEN",
                 fontSize = 50.sp, // Adjust font size if needed
                 fontWeight = FontWeight.Bold,
-                color = WarmWhite,
+                color = Black33,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally) // Centers the text horizontally
@@ -102,7 +106,7 @@ fun WomenSection() {
             ) {
                 // Buttons for navigation
                 Button(
-                    onClick = {  },
+                    onClick = { navController.navigate("womenUpperwear") },
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF90CAF9)),
                     modifier = Modifier
@@ -115,7 +119,7 @@ fun WomenSection() {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
-                    onClick = {  },
+                    onClick = {  navController.navigate("womenUnderwear")},
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF90CAF9)),
                     modifier = Modifier
@@ -128,7 +132,7 @@ fun WomenSection() {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
-                    onClick = { },
+                    onClick = { navController.navigate("womenAccessories")},
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF90CAF9)),
                     modifier = Modifier
