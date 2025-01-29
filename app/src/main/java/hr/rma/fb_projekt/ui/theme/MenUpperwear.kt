@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -22,19 +19,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.firestore.FirebaseFirestore
 import hr.rma.fb_projekt.R
 
-data class Article(
-    val imageUrl: String = "",
-    val title: String = "",
-    val price: String = ""
-)
 
 @Composable
 fun MenUpperwear(navController: NavHostController, cartItems: MutableList<Article>) {
@@ -43,7 +33,7 @@ fun MenUpperwear(navController: NavHostController, cartItems: MutableList<Articl
 
     LaunchedEffect(Unit) {
         firestore.collection("MenUpperwear")
-            .get()
+            .get()//dohvaca kolekciju
             .addOnSuccessListener { result ->
                 val fetchedArticles = result.map { document ->
                     Article(
@@ -65,7 +55,7 @@ fun MenUpperwear(navController: NavHostController, cartItems: MutableList<Articl
             contentDescription = "Background image",
             contentScale = ContentScale.FillHeight,
             modifier = Modifier.matchParentSize(),
-            alpha = 0.3F
+            alpha = 0.5F
         )
 
         Column(
@@ -135,63 +125,9 @@ fun MenUpperwear(navController: NavHostController, cartItems: MutableList<Articl
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(16.dp)
                 )
-                }}
-            }
-
-
-        }
-    }
-
-
-@Composable
-fun ArticleCard(article: Article, cartItems: MutableList<Article>, navController: NavHostController) {
-    Card(
-        shape = RoundedCornerShape(12.dp),
-        modifier = Modifier
-            .padding(6.dp)
-            .fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
-    ) {
-        Column(
-            modifier = Modifier.padding(14.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = rememberAsyncImagePainter(article.imageUrl),
-                contentDescription = article.title,
-                modifier = Modifier
-                    .height(90.dp)
-                    .fillMaxWidth(),
-                contentScale = ContentScale.Crop
-            )
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(
-                text = article.title,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = Color.Black,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "€${article.price}",
-                fontSize = 14.sp,
-                color = Color.Gray,
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(2.dp))
-            Button(
-                onClick = {
-                    cartItems.add(article) // Add item to cart
-                },
-                modifier = Modifier.padding(top = 8.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Black33),
-            ) {
-                Text(text = "Add to Cart", fontSize = 12.sp)
+                }
             }
         }
-
     }
 }
+

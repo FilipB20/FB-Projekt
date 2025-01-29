@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -27,7 +24,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -40,7 +36,6 @@ fun WomenUpperwear(navController: NavHostController,cartItems: MutableList<Artic
     val firestore = FirebaseFirestore.getInstance()
     var articles by remember { mutableStateOf(listOf<Article>()) }
 
-    // Fetch data from Firestore
     LaunchedEffect(Unit) {
         firestore.collection("WomenUpperwear")
             .get()
@@ -54,23 +49,18 @@ fun WomenUpperwear(navController: NavHostController,cartItems: MutableList<Artic
                 }
                 articles = fetchedArticles
             }
-            .addOnFailureListener {
-                // Handle failure, e.g., log the error
-            }
     }
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Background Image
         Image(
             painter = painterResource(id = R.drawable.img),
             contentDescription = "Background image",
             contentScale = ContentScale.FillHeight,
             modifier = Modifier.matchParentSize(),
-            alpha = 0.3F
+            alpha = 0.5F
         )
 
-        // Foreground Content
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -78,14 +68,13 @@ fun WomenUpperwear(navController: NavHostController,cartItems: MutableList<Artic
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Top Section
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.Black)
                     .height(50.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween // Ensures space between items
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
@@ -95,9 +84,7 @@ fun WomenUpperwear(navController: NavHostController,cartItems: MutableList<Artic
                         .padding(start = 16.dp)
                         .size(24.dp)
                         .clickable {
-                            // Navigate to the main screen explicitly
                             navController.navigate("women") {
-                                // This will pop the current "men" screen from the back stack to avoid redundant navigation
                                 popUpTo("women") { inclusive = true }
                             }
                         }
@@ -120,7 +107,6 @@ fun WomenUpperwear(navController: NavHostController,cartItems: MutableList<Artic
                 )
             }
 
-            // Heading
             Text(
                 text = "UPPERWEAR",
                 color = Black33,
@@ -128,9 +114,8 @@ fun WomenUpperwear(navController: NavHostController,cartItems: MutableList<Artic
                 modifier = Modifier.padding(top = 16.dp)
             )
 
-            // Articles Grid
             LazyVerticalGrid(
-                columns = GridCells.Fixed(2), // 2 columns
+                columns = GridCells.Fixed(2),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp)

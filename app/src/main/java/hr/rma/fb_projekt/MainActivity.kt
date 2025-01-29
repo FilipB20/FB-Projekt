@@ -11,7 +11,7 @@ import hr.rma.fb_projekt.ui.theme.*
 
 @Composable
 fun MyApp() {
-    // Shared state for the cart
+    // da se kosarica dijeli izmedu zaslona
     val cartItems = remember { mutableStateListOf<Article>() }
     AppNavigation(cartItems = cartItems)
 }
@@ -44,8 +44,6 @@ fun AppNavigation(cartItems: MutableList<Article>) {
         composable("womenUnderwear") { WomenUnderwear(navController,cartItems) }
         composable("womenAccessories") { WomenAccessories(navController,cartItems) }
 
-
-        composable("favorites") { FavoritesSection() }
         composable("cart") { CartScreen(navController,cartItems = cartItems) }
 
     }

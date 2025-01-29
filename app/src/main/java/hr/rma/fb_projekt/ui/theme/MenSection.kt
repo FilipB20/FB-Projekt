@@ -1,6 +1,5 @@
 package hr.rma.fb_projekt.ui.theme
 
-import android.graphics.fonts.Font
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,7 +17,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -45,14 +43,13 @@ fun MenSection(navController: NavHostController,cartItems: MutableList<Article>)
                 .padding(start = 16.dp)
                 .size(24.dp)
                 .clickable {
-                    // Navigate to the main screen explicitly
+                    // da se moze stisnit na ikonicu
                     navController.navigate("main") {
-                        // This will pop the current "men" screen from the back stack to avoid redundant navigation
+                        // optimizacija
                         popUpTo("main") { inclusive = true }
                     }
                 }
         )
-
 
         Column(
             modifier = Modifier
@@ -76,7 +73,7 @@ fun MenSection(navController: NavHostController,cartItems: MutableList<Article>)
                         .padding(start = 16.dp)
                         .size(24.dp)
                         .clickable {
-                            navController.popBackStack() // Navigate back
+                            navController.popBackStack() // idi nazad
                         }
                 )
                 Text(

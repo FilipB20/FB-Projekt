@@ -1,6 +1,5 @@
 package hr.rma.fb_projekt.ui.theme
 
-import android.graphics.fonts.Font
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,7 +17,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -30,7 +28,6 @@ fun WomenSection(navController: NavHostController,cartItems: MutableList<Article
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Background Image
         Image(
             painter = painterResource(id = R.drawable.img),
             contentDescription = "Background image",
@@ -39,21 +36,19 @@ fun WomenSection(navController: NavHostController,cartItems: MutableList<Article
             alpha = 0.5F
         )
 
-        // Foreground Content
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(0.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Top Section
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.Black)
                     .height(50.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween // Ensures space between items
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
@@ -63,9 +58,7 @@ fun WomenSection(navController: NavHostController,cartItems: MutableList<Article
                         .padding(start = 16.dp)
                         .size(24.dp)
                         .clickable {
-                            // Navigate to the main screen explicitly
                             navController.navigate("main") {
-                                // This will pop the current "men" screen from the back stack to avoid redundant navigation
                                 popUpTo("main") { inclusive = true }
                             }
                         }
@@ -89,22 +82,20 @@ fun WomenSection(navController: NavHostController,cartItems: MutableList<Article
             }
             Text(
                 text = "WOMEN",
-                fontSize = 50.sp, // Adjust font size if needed
+                fontSize = 50.sp,
                 fontWeight = FontWeight.Bold,
                 color = Black33,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .align(Alignment.CenterHorizontally) // Centers the text horizontally
-                    .padding(top = 100.dp, bottom = 100.dp) // Adds spacing above the buttons
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 100.dp, bottom = 100.dp)
             )
 
 
-            // Main Content
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Buttons for navigation
                 Button(
                     onClick = { navController.navigate("womenUpperwear") },
                     shape = RoundedCornerShape(12.dp),
@@ -143,7 +134,6 @@ fun WomenSection(navController: NavHostController,cartItems: MutableList<Article
                 }
             }
 
-            // Footer Section
             Text(
                 text = "Closetify™ All rights reserved.",
                 fontSize = 12.sp,
